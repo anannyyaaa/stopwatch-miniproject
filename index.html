@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Stylish Stopwatch</title>
+
+  <!-- React -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #1a1a2e, #2a1a3f, #3a1c5a);
+      color: white;
+    }
+
+    .container {
+      backdrop-filter: blur(20px);
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 40px;
+      width: 320px;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-weight: 500;
+      letter-spacing: 1px;
+    }
+
+    .time {
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 30px;
+      letter-spacing: 2px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    button {
+      flex: 1;
+      margin: 5px;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .start {
+      background: linear-gradient(135deg, #a855f7, #7c3aed);
+      color: white;
+    }
+
+    .stop {
+      background: linear-gradient(135deg, #f43f5e, #e11d48);
+      color: white;
+    }
+
+    .reset {
+      background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+      color: white;
+    }
+
+    button:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+
+  </style>
+</head>
+
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+  const { useState, useRef } = React;
+
+  function Stopwatch() {
+    const [time, setTime] = useState(0);
+    const [isRunning, setIsRunning] = useState(false);
+    const intervalRef = useRef(null);
+
+    const start = () => {
+      if (!isRunning) {
+        setIsRunning(true);
+        intervalRef.current = setInterval(() => {
+          setTime(prev => prev + 1);
+        }, 1000);
+      }
+    };
+
+    const stop = () => {
+      setIsRunning(false);
+      clearInterval(intervalRef.current);
+    };
+
+    const reset = () => {
+      setIsRunning(false);
+      clearInterval(intervalRef.current);
+      setTime(0);
+    };
+
+    const formatTime = (time) => {
+      const hrs = String(Math.floor(time / 3600)).padStart(2, '0');
+      const mins = String(Math.floor((time % 3600) / 60)).padStart(2, '0');
+      const secs = String(time % 60).padStart(2, '0');
+      return `${hrs}:${mins}:${secs}`;
+    };
+
+    return (
+      <div className="container">
+        <h1>⏱ Stopwatch</h1>
+        <div className="time">{formatTime(time)}</div>
+
+        <div className="buttons">
+          <button className="start" onClick={start}>Start</button>
+          <button className="stop" onClick={stop}>Stop</button>
+          <button className="reset" onClick={reset}>Reset</button>
+        </div>
+      </div>
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById("root")).render(<Stopwatch />);
+</script>
+
+</body>
+</html>
