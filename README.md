@@ -62,7 +62,7 @@ A modern and responsive **Stopwatch Web Application** built using **HTML, CSS, J
 
 ## 📌 Author
 
-**Ananya**
+**Ananya** - 
 Student 
 
 ---
